@@ -1,0 +1,480 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+The content has been processed where security check has been disabled.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Security check has been disabled - content may contain sensitive information
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+<additional_info>
+
+</additional_info>
+
+</file_summary>
+
+<directory_structure>
+project/
+  .bolt/
+    config.json
+    prompt
+  src/
+    App.tsx
+    index.css
+    main.tsx
+    vite-env.d.ts
+  .gitignore
+  eslint.config.js
+  index.html
+  package.json
+  postcss.config.js
+  tailwind.config.js
+  tsconfig.app.json
+  tsconfig.json
+  tsconfig.node.json
+  vite.config.ts
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="project/.bolt/config.json">
+{
+  "template": "bolt-vite-react-ts"
+}
+</file>
+
+<file path="project/.bolt/prompt">
+For all designs I ask you to make, have them be beautiful, not cookie cutter. Make webpages that are fully featured and worthy for production.
+
+By default, this template supports JSX syntax with Tailwind CSS classes, React hooks, and Lucide React for icons. Do not install other packages for UI themes, icons, etc unless absolutely necessary or I request them.
+
+Use icons from lucide-react for logos.
+
+Use stock photos from unsplash where appropriate, only valid URLs you know exist. Do not download the images, only link to them in image tags.
+</file>
+
+<file path="project/src/App.tsx">
+import React, { useState } from 'react';
+import { Search, ThumbsUp, ThumbsDown, Skull, Brain } from 'lucide-react';
+
+interface Claim {
+  text: string;
+  verdict: boolean;
+  evidence: string;
+  roast: string;
+  reactions: {
+    agree: number;
+    disagree: number;
+  };
+}
+
+function App() {
+  const [claims, setClaims] = useState<Claim[]>([]);
+  const [input, setInput] = useState('');
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+
+  const capCount = claims.filter(claim => !claim.verdict).length;
+
+  const mockFactCheck = async (claim: string) => {
+    setIsAnalyzing(true);
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    // Mock verdict (randomly for demo)
+    const isCap = Math.random() > 0.5;
+    const roasts = [
+      "Even Ali's calculator has trust issues now 🧮",
+      "Ali's pants are probably fireproof from all the cap 🔥",
+      "Ali's got more cap than a graduation ceremony 🎓",
+      "Trust Ali's words? I'd rather trust a chocolate teapot ☕",
+      "Ali's speaking more cap than a baseball convention ⚾"
+    ];
+
+    const newClaim: Claim = {
+      text: claim,
+      verdict: !isCap,
+      evidence: isCap 
+        ? "After extensive research and consulting with experts, this claim seems about as reliable as Ali's workout routine." 
+        : "Surprisingly, Ali's actually speaking facts this time. Mark this day in your calendar!",
+      roast: roasts[Math.floor(Math.random() * roasts.length)],
+      reactions: { agree: 0, disagree: 0 }
+    };
+
+    setClaims(prev => [newClaim, ...prev]);
+    setIsAnalyzing(false);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!input.trim()) return;
+    mockFactCheck(input);
+    setInput('');
+  };
+
+  const handleReaction = (index: number, type: 'agree' | 'disagree') => {
+    setClaims(prev => prev.map((claim, i) => {
+      if (i === index) {
+        return {
+          ...claim,
+          reactions: {
+            ...claim.reactions,
+            [type]: claim.reactions[type] + 1
+          }
+        };
+      }
+      return claim;
+    }));
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-purple-500 to-indigo-600 p-2 sm:p-4">
+      <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-xl overflow-hidden">
+        {/* Header */}
+        <div className="bg-gray-800 p-3 sm:p-4 text-white flex items-center justify-between">
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <Brain className="w-5 h-5 sm:w-6 sm:h-6" />
+            <h1 className="text-lg sm:text-xl font-bold">Ali Fact Checker 3000</h1>
+          </div>
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <Skull className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="text-xs sm:text-sm">Cap Counter: {capCount}</span>
+          </div>
+        </div>
+
+        {/* Chat Area */}
+        <div className="h-[calc(100vh-180px)] sm:h-[500px] overflow-y-auto p-2 sm:p-4 space-y-3 sm:space-y-4">
+          {isAnalyzing && (
+            <div className="flex items-center gap-2 text-gray-600 animate-pulse">
+              <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gray-600 rounded-full animate-bounce"></div>
+              <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gray-600 rounded-full animate-bounce [animation-delay:0.2s]"></div>
+              <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gray-600 rounded-full animate-bounce [animation-delay:0.4s]"></div>
+              <span className="text-sm sm:text-base">Analyzing Ali's claim...</span>
+            </div>
+          )}
+          
+          {claims.map((claim, index) => (
+            <div key={index} className="space-y-2">
+              <div className="bg-gray-100 p-3 sm:p-4 rounded-lg text-sm sm:text-base">
+                <p className="font-medium text-gray-800">{claim.text}</p>
+                <p className="text-gray-600 mt-2 text-sm">{claim.evidence}</p>
+                <div className="mt-2 flex flex-wrap items-center gap-1.5 sm:gap-2">
+                  <span className={`font-bold ${claim.verdict ? 'text-green-500' : 'text-red-500'}`}>
+                    {claim.verdict ? 'No Cap ✅' : 'Cap 🧢'}
+                  </span>
+                  <span className="text-gray-500">|</span>
+                  <span className="text-gray-600 italic text-sm">{claim.roast}</span>
+                </div>
+                <div className="mt-2 flex gap-3">
+                  <button
+                    onClick={() => handleReaction(index, 'agree')}
+                    className="flex items-center gap-1 text-xs sm:text-sm text-gray-600 hover:text-green-500"
+                  >
+                    <ThumbsUp className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> {claim.reactions.agree}
+                  </button>
+                  <button
+                    onClick={() => handleReaction(index, 'disagree')}
+                    className="flex items-center gap-1 text-xs sm:text-sm text-gray-600 hover:text-red-500"
+                  >
+                    <ThumbsDown className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> {claim.reactions.disagree}
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Input Area */}
+        <form onSubmit={handleSubmit} className="p-2 sm:p-4 bg-gray-50 border-t">
+          <div className="flex flex-col sm:flex-row gap-2">
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Ali says..."
+              className="flex-1 px-3 sm:px-4 py-2 text-sm sm:text-base rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            />
+            <button
+              type="submit"
+              disabled={isAnalyzing}
+              className="px-4 sm:px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 disabled:opacity-50 flex items-center justify-center gap-2 text-sm sm:text-base"
+            >
+              <Search className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              Check the Cap
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+export default App;
+</file>
+
+<file path="project/src/index.css">
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Outfit', sans-serif;
+}
+</file>
+
+<file path="project/src/main.tsx">
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import App from './App.tsx';
+import './index.css';
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <App />
+  </StrictMode>
+);
+</file>
+
+<file path="project/src/vite-env.d.ts">
+/// <reference types="vite/client" />
+</file>
+
+<file path="project/.gitignore">
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+</file>
+
+<file path="project/eslint.config.js">
+import js from '@eslint/js';
+import globals from 'globals';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
+import tseslint from 'typescript-eslint';
+
+export default tseslint.config(
+  { ignores: ['dist'] },
+  {
+    extends: [js.configs.recommended, ...tseslint.configs.recommended],
+    files: ['**/*.{ts,tsx}'],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: globals.browser,
+    },
+    plugins: {
+      'react-hooks': reactHooks,
+      'react-refresh': reactRefresh,
+    },
+    rules: {
+      ...reactHooks.configs.recommended.rules,
+      'react-refresh/only-export-components': [
+        'warn',
+        { allowConstantExport: true },
+      ],
+    },
+  }
+);
+</file>
+
+<file path="project/index.html">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + React + TS</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+</file>
+
+<file path="project/package.json">
+{
+  "name": "vite-react-typescript-starter",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "lucide-react": "^0.344.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.9.1",
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "autoprefixer": "^10.4.18",
+    "eslint": "^9.9.1",
+    "eslint-plugin-react-hooks": "^5.1.0-rc.0",
+    "eslint-plugin-react-refresh": "^0.4.11",
+    "globals": "^15.9.0",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.5.3",
+    "typescript-eslint": "^8.3.0",
+    "vite": "^5.4.2"
+  }
+}
+</file>
+
+<file path="project/postcss.config.js">
+export default {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+};
+</file>
+
+<file path="project/tailwind.config.js">
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+};
+</file>
+
+<file path="project/tsconfig.app.json">
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["src"]
+}
+</file>
+
+<file path="project/tsconfig.json">
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
+}
+</file>
+
+<file path="project/tsconfig.node.json">
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2023"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["vite.config.ts"]
+}
+</file>
+
+<file path="project/vite.config.ts">
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [react()],
+  optimizeDeps: {
+    exclude: ['lucide-react'],
+  },
+});
+</file>
+
+</files>
