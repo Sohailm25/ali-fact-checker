@@ -7,4 +7,5 @@ export interface Claim {
     agree: number;
     disagree: number;
   };
+  isAIGenerated?: boolean; // Flag to indicate if response is from AI or fallback
 } 
